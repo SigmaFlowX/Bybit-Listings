@@ -26,6 +26,10 @@ for i in data.index:
         print("No data for", ticker)
         data.at[i, 'is_delisted'] = 1
         continue
+    if m_ohlcv:
+        ts = m_ohlcv[0][0]
+        dt_utc = datetime.fromtimestamp(ts / 1000, tz=timezone.utc)
+        data.at[i, 'accurate_listing_time'] = dt_utc
 
     if m_ohlcv and h_ohlcv and d_ohlcv and len(d_ohlcv) == 31:
         base_price = m_ohlcv[0][4]
@@ -33,10 +37,6 @@ for i in data.index:
         one_day_price = d_ohlcv[0][4]
         one_month_price = d_ohlcv[30][4]
 
-        ts = m_ohlcv[0][0]
-        dt_utc = datetime.fromtimestamp(ts / 1000, tz=timezone.utc)
-
-        data.at[i, 'accurate_listing_time'] = dt_utc
         data.at[i, 'one_hour_post_listing_performance'] = round((one_hour_price - base_price) / base_price * 100, 1)
         data.at[i, 'one_day_post_listing_performance'] = round((one_day_price - base_price) / base_price * 100, 1)
         data.at[i, 'one_month_post_listing_performance'] = round ((one_month_price - base_price)/base_price * 100, 1)
