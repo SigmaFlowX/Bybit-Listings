@@ -31,9 +31,9 @@ for i in data.index:
         one_day_price = d_ohlcv[0][4]
         one_month_price = d_ohlcv[30][4]
 
-        data.at[i, 'one_hour_post_listing_performance'] = round((one_hour_price - base_price) / base_price, 2)
-        data.at[i, 'one_day_post_listing_performance'] = round((one_day_price - base_price) / base_price, 2)
-        data.at[i, 'one_month_post_listing_performance'] = round ((one_month_price - base_price)/base_price, 2)
+        data.at[i, 'one_hour_post_listing_performance'] = round((one_hour_price - base_price) / base_price * 100, 1)
+        data.at[i, 'one_day_post_listing_performance'] = round((one_day_price - base_price) / base_price * 100, 1)
+        data.at[i, 'one_month_post_listing_performance'] = round ((one_month_price - base_price)/base_price * 100, 1)
         print("found data for", ticker)
     else:
         print("Not enough data for", ticker)
