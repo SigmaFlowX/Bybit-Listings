@@ -1,7 +1,8 @@
+import csv
 import re
 import time
-import csv
 import requests
+from datetime import datetime, timezone
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
@@ -47,7 +48,11 @@ def is_valid_listing(text: str) -> bool:
 def fetch_page(session: requests.Session, page: int) -> list[dict]:
     r = session.get(
         API_URL,
-        params={"locale": LOCALE, "page": page, "limit": LIMIT},
+        params={
+            "locale": LOCALE,
+            "page": page,
+            "limit": LIMIT
+        },
         headers=HEADERS,
         timeout=30
     )
@@ -61,7 +66,7 @@ def parse_all_listings(max_pages: int = 200) -> list[dict]:
     rows = []
 
     for page in range(1, max_pages + 1):
-        print(f"{page}/{max_pages}")
+        print("page number", page)
         items = fetch_page(session, page)
         if not items:
             break
@@ -72,10 +77,23 @@ def parse_all_listings(max_pages: int = 200) -> list[dict]:
                 continue
 
             tickers = extract_tickers(text)
+            if not tickers:
+                continue
+
+            ts = ann.get("dateTimestamp")
+            if not ts:
+                continue
+
+            listing_time = datetime.fromtimestamp(ts / 1000, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+
             for ticker in tickers:
-                if ticker not in seen:
-                    seen.add(ticker)
-                    rows.append({"ticker": ticker})
+                key = (ticker, listing_time)
+                if key not in seen:
+                    seen.add(key)
+                    rows.append({
+                        "ticker": ticker,
+                        "listing_time": listing_time
+                    })
 
         time.sleep(0.3)
 
@@ -84,7 +102,7 @@ def parse_all_listings(max_pages: int = 200) -> list[dict]:
 
 def save_to_csv(data: list[dict], filename: str) -> None:
     with open(filename, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=("ticker",))
+        writer = csv.DictWriter(f, fieldnames=("ticker", "listing_time"))
         writer.writeheader()
         writer.writerows(data)
 
