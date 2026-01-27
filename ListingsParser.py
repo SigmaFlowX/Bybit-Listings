@@ -87,11 +87,11 @@ def parse_all_listings(max_pages: int = 200) -> list[dict]:
             listing_time = datetime.fromtimestamp(ts / 1000, tz=timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
 
             for ticker in tickers:
-                key = (ticker, listing_time)
-                if key not in seen:
-                    seen.add(key)
+                ticker_norm = ticker.upper().strip()
+                if ticker_norm not in seen:
+                    seen.add(ticker_norm)
                     rows.append({
-                        "ticker": ticker,
+                        "ticker": ticker_norm,
                         "listing_time": listing_time
                     })
 
