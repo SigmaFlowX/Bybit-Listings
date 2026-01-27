@@ -25,4 +25,4 @@ for coin, group in data.groupby('base_coin'):
 
 data = data[['ticker', 'base_coin', 'listing_time' ,'asset_type', 'listing_order']]
 
-data.to_csv("data.csv")
+data.to_csv("data.csv", index=False)
