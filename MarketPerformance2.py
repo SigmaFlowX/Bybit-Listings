@@ -1,7 +1,16 @@
 import ccxt
 import pandas as pd
 
+date_str = '2020-01-01'
+since = int(pd.Timestamp(date_str).timestamp() * 1000)
+
 bybit = ccxt.bybit()
+data = pd.read_csv("listing_data.csv")
+
+data['one_hour_post_listing_performance'] = None
+data['one_day_post_listing_performance'] = None
+data['one_month_post_listing_performance'] = None
+data['is_delisted'] = 0
 
 for i in data.index:
     if data['asset_type'][i] == 0: ticker = data['ticker'][i] + "/USDT"
