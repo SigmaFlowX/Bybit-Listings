@@ -13,7 +13,7 @@ LIMIT = 50
 
 KEYWORDS = {"list", "listing", "listed", "lists"}
 STOP_WORDS = {"usdc", "convert", "delisting", "delist"}
-STOP_TICKERS = {"UTC", "USDT", "USD", "NFT", "BTC", "ETH"}
+STOP_TICKERS = {"UTC", "USDT", "USD", "NFT", "BTC", "ETH", "MNT"}
 
 TICKER_REGEX = re.compile(r"\b([A-Z]{2,}USDT|[A-Z]{2,})\b")
 

@@ -1,5 +1,6 @@
 import ccxt
 import pandas as pd
+from datetime import datetime, timezone
 
 date_str = '2020-01-01'
 since = int(pd.Timestamp(date_str).timestamp() * 1000)
@@ -7,6 +8,7 @@ since = int(pd.Timestamp(date_str).timestamp() * 1000)
 bybit = ccxt.bybit()
 data = pd.read_csv("listing_data.csv")
 
+data['accurate_listing_time'] = None
 data['one_hour_post_listing_performance'] = None
 data['one_day_post_listing_performance'] = None
 data['one_month_post_listing_performance'] = None
@@ -31,6 +33,10 @@ for i in data.index:
         one_day_price = d_ohlcv[0][4]
         one_month_price = d_ohlcv[30][4]
 
+        ts = m_ohlcv[0][0]
+        dt_utc = datetime.fromtimestamp(ts / 1000, tz=timezone.utc)
+
+        data.at[i, 'accurate_listing_time'] = dt_utc
         data.at[i, 'one_hour_post_listing_performance'] = round((one_hour_price - base_price) / base_price * 100, 1)
         data.at[i, 'one_day_post_listing_performance'] = round((one_day_price - base_price) / base_price * 100, 1)
         data.at[i, 'one_month_post_listing_performance'] = round ((one_month_price - base_price)/base_price * 100, 1)
