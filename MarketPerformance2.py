@@ -44,5 +44,5 @@ for i in data.index:
     else:
         print("Not enough data for", ticker)
 
-data.to_csv("listing+market_data.csv", index=False)
+data.to_csv("listing+post_data.csv", index=False)
 print(data.head(5))
