@@ -7,7 +7,7 @@ pd.set_option("display.width", 1000)
 pd.set_option("display.expand_frame_repr", False)
 
 
-data = pd.read_csv("listing+post_data.csv")
+data = pd.read_csv("../listing+post_data.csv")
 
 #add coingecko-id for each ticker
 url = "https://api.coingecko.com/api/v3/coins/list"

@@ -1,6 +1,6 @@
 import pandas as pd
 
-data = pd.read_csv("bybit_listings.csv")
+data = pd.read_csv("../bybit_listings.csv")
 
 data['asset_type'] = data['ticker'].apply(lambda x: 1 if 'USDT' in x else 0)
 data['base_coin'] = data['ticker'].apply(lambda x: x.replace('USDT', ''))

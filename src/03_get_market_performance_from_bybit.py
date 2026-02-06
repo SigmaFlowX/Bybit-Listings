@@ -6,7 +6,7 @@ date_str = '2020-01-01'
 since = int(pd.Timestamp(date_str).timestamp() * 1000)
 
 bybit = ccxt.bybit()
-data = pd.read_csv("listing_data.csv")
+data = pd.read_csv("../listing_data.csv")
 
 data['accurate_listing_time'] = None
 data['one_hour_post_listing_performance'] = None

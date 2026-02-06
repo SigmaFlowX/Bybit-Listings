@@ -109,4 +109,4 @@ def save_to_csv(data: list[dict], filename: str) -> None:
 
 if __name__ == "__main__":
     data = parse_all_listings(max_pages=200)
-    save_to_csv(data, "bybit_listings.csv")
+    save_to_csv(data, "../bybit_listings.csv")
