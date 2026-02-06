@@ -1,12 +1,17 @@
 import ccxt
 import pandas as pd
 from datetime import datetime, timezone
+import os
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+INPUT_FILE = os.path.join(DATA_DIR, "step2_output.csv")
+OUTPUT_FILE = os.path.join(DATA_DIR, "step3_output.csv")
 
 date_str = '2020-01-01'
 since = int(pd.Timestamp(date_str).timestamp() * 1000)
 
 bybit = ccxt.bybit()
-data = pd.read_csv("../listing_data.csv")
+data = pd.read_csv(INPUT_FILE)
 
 data['accurate_listing_time'] = None
 data['one_hour_post_listing_performance'] = None
@@ -44,5 +49,5 @@ for i in data.index:
     else:
         print("Not enough data for", ticker)
 
-data.to_csv("listing+post_data.csv", index=False)
+data.to_csv(OUTPUT_FILE, index=False)
 print(data.head(5))
