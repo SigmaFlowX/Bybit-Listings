@@ -5,6 +5,11 @@ import requests
 from datetime import datetime, timezone
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+import os
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+OUTPUT_FILE = os.path.join(DATA_DIR, "step1_output.csv")
+
 
 API_URL = "https://api.bybit.com/v5/announcements/index"
 HEADERS = {"User-Agent": "Mozilla/5.0"}
@@ -109,4 +114,4 @@ def save_to_csv(data: list[dict], filename: str) -> None:
 
 if __name__ == "__main__":
     data = parse_all_listings(max_pages=200)
-    save_to_csv(data, "../bybit_listings.csv")
+    save_to_csv(data, OUTPUT_FILE)
