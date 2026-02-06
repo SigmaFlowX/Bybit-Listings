@@ -1,6 +1,11 @@
 import pandas as pd
+import os
 
-data = pd.read_csv("../bybit_listings.csv")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+INPUT_FILE = os.path.join(DATA_DIR, "step1_output.csv")
+OUTPUT_FILE = os.path.join(DATA_DIR, "step2_output.csv")
+
+data = pd.read_csv(INPUT_FILE)
 
 data['asset_type'] = data['ticker'].apply(lambda x: 1 if 'USDT' in x else 0)
 data['base_coin'] = data['ticker'].apply(lambda x: x.replace('USDT', ''))
@@ -25,4 +30,4 @@ for coin, group in data.groupby('base_coin'):
 
 data = data[['ticker', 'base_coin', 'listing_time' ,'asset_type', 'listing_order']]
 
-data.to_csv("listing_data.csv", index=False)
+data.to_csv(OUTPUT_FILE, index=False)
