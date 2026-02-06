@@ -2,12 +2,19 @@ import pandas as pd
 import requests
 from datetime import datetime, timedelta
 import time
+import os
 pd.set_option("display.max_rows", 20)
 pd.set_option("display.width", 1000)
 pd.set_option("display.expand_frame_repr", False)
 
 
-data = pd.read_csv("../listing+post_data.csv")
+DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
+OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "output")
+INPUT_FILE = os.path.join(DATA_DIR, "step3_output.csv")
+OUTPUT_FILE = os.path.join(OUTPUT_DIR, "step4_output.csv")
+
+
+data = pd.read_csv(INPUT_FILE)
 
 #add coingecko-id for each ticker
 url = "https://api.coingecko.com/api/v3/coins/list"
@@ -98,7 +105,7 @@ for i in data.index:
         data.at[i, 'price_change_minus7d'] = price_change_minus7d
         data.at[i, 'volume_change_minus7d'] = volume_change_minus7d
 
-    data.to_csv("listing+post+pre_data.csv", index=False)
+    data.to_csv(OUTPUT_FILE, index=False)
     print(f"Done for token {token_id}")
     print(i)
     time.sleep(2)
